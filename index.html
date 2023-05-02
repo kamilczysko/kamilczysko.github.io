@@ -11,11 +11,23 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+    <script src="AIPlayer.js"></script>
+    <script src="GameState.js"></script>
     <title>Thic-tac-toe</title>
 </head>
 
 <body>
-    <p id="hint" class="hint invisible">Your turn</p>
+    <nav>
+        <div class="user-info">
+            <div id="user-sign" class="user-sign"></div>
+            <p id="hint" class="hint invisible"> - Your turn!</p>
+        </div>
+
+        <div class="depth-info">
+            <p>Depth level: </p> <span id="depth-leve-info">4</span>
+        </div>
+    </nav>
+
     <h1>Thic-tac toe</h1>
     <div class="board">
         <div class="row">
@@ -57,23 +69,26 @@
         <h1 id="popup-header">Thic-tac toe</h1>
         <div>
             <p id="popup-message"></p>
-            
+        </div>
+        <div class="setting">
+            <p>Set depth level</p>
+            <input type="number" value="3" id="depth-level" class="depth-level">
         </div>
         <div class="popup-info">
             <p>Click to start new game</p>
             <span>Choose :</span>
             <div class="button-group">
-                <button id="popup-button-x">X</button>    
+                <button id="popup-button-x">X</button>
                 <span>or</span>
-                <button id="popup-button-o">O</button>    
+                <button id="popup-button-o">O</button>
             </div>
 
         </div>
-        
+
     </div>
     <script src="game.js"></script>
 
-    
+
 </body>
 
 </html>

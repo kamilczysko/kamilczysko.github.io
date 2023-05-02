@@ -1,148 +1,3 @@
-class GameState {
-
-    constructor(board) {
-        if (board) {
-            this.board = Array.from(board)
-        } else {
-            this.board = [null, null, null, null, null, null, null, null, null]
-        }
-        this.result = null
-        this.winner = null
-
-    }
-
-    printBoard() {
-        console.log(this.board[0] + " " + this.board[1] + " " + this.board[2] + "\n" +
-            this.board[3] + " " + this.board[4] + " " + this.board[5] + "\n" +
-            this.board[6] + " " + this.board[7] + " " + this.board[8] + "\n")
-    }
-
-    select(i, player) {
-        if (this.board[i] != null) { return false }
-        this.board[i] = player
-        this.check()
-        return true
-    }
-
-    getFreeMoves() {
-        const freeMoves = []
-        Array.from(this.board).forEach((cell, i) => {
-            if (cell == null) {
-                freeMoves.push(i)
-            }
-        })
-        return freeMoves
-    }
-
-    check() {
-        //rows
-        if (this.board[0] == this.board[1] && this.board[0] == this.board[2] && this.board[0] != null) {
-            this.winner = this.board[0]
-            this.result = [0, 1, 2]
-        }
-        else if (this.board[3] == this.board[4] && this.board[3] == this.board[5] && this.board[3] != null) {
-            this.winner = this.board[3]
-            this.result = [3, 4, 5]
-        }
-        else if (this.board[6] == this.board[7] && this.board[6] == this.board[8] && this.board[6] != null) {
-            this.winner = this.board[6]
-            this.result = [6, 7, 8]
-        }
-        //cols
-        else if (this.board[0] == this.board[3] && this.board[0] == this.board[6] && this.board[0] != null) {
-            this.winner = this.board[0]
-            this.result = [0, 3, 6]
-        }
-        else if (this.board[1] == this.board[4] && this.board[1] == this.board[7] && this.board[1] != null) {
-            this.winner = this.board[1]
-            this.result = [1, 4, 7]
-        }
-        else if (this.board[2] == this.board[5] && this.board[2] == this.board[8] && this.board[2] != null) {
-            this.winner = this.board[2]
-            this.result = [2, 5, 8]
-        }
-        //diags
-        else if (this.board[0] == this.board[4] && this.board[0] == this.board[8] && this.board[8] != null) {
-            this.winner = this.board[8]
-            this.result = [0, 4, 8]
-        }
-        else if (this.board[2] == this.board[4] && this.board[2] == this.board[6] && this.board[2] != null) {
-            this.winner = this.board[2]
-            this.result = [2, 4, 6]
-        } else if (Array.from(this.board).every(cell => cell != null)) {
-            this.winner = 'n'
-        }
-    }
-
-    getWinner() { return this.winner }
-
-    isWinner() {
-        return this.winner != null
-    }
-
-    getBoard() { return this.board }
-
-    getResult() { return this.result }
-}
-
-class AIPlayer {
-
-    constructor(player, opponent) {
-        this.player = player
-        this.opponent = opponent
-    }
-
-    move(board) {
-        let perfectMove = 0
-        let bestScore = -Infinity
-        Array.from(board.getFreeMoves()).forEach(move => {
-            let newBoard = new GameState(board.getBoard())
-            newBoard.select(move, this.player)
-            if (newBoard.isWinner() && newBoard.getWinner == this.player) {
-                return move
-            }
-            const score = this.minimax(newBoard, 3, false)
-            if (bestScore < score) {
-                perfectMove = move
-                bestScore = score
-            }
-        })
-        return perfectMove
-    }
-
-    minimax(board, depth, miximizingPlayer) {
-        if (board.isWinner() || depth <= 0) {
-            return this.getScore(board.getWinner())
-        }
-        if (miximizingPlayer) {
-            let bestScore = -Infinity
-            Array.from(board.getFreeMoves()).forEach(move => {
-                let newBoard = new GameState(board.getBoard())
-                newBoard.select(move, this.player)
-                const score = this.minimax(newBoard, depth - 1, false)
-                bestScore = Math.max(score, bestScore)
-            })
-            return bestScore
-        } else {
-            let bestScore = Infinity
-            Array.from(board.getFreeMoves()).forEach(move => {
-                let newBoard = new GameState(board.getBoard())
-                newBoard.select(move, this.opponent)
-                const score = this.minimax(newBoard, depth - 1, true)
-                bestScore = Math.min(score, bestScore)
-            })
-            return bestScore
-        }
-    }
-
-    getScore(winner) {
-        if (winner == this.player) { return 1 }
-        if (winner == this.opponent) { return -1 }
-        return 0
-    }
-
-}
-
 let player = "x"
 let computer = "o"
 let start = player
@@ -161,7 +16,7 @@ Array.from(document.getElementsByClassName('field')).forEach((element, idx) => {
             if (winner == 'n') {
                 document.getElementById('popup').classList.remove('invisible')
                 document.getElementById('popup-message').innerText = "Nobody won! Both losers!"
-                won = 'n'
+                won = player //let it be
             } else {
                 if (winner == player) {
                     document.getElementById('popup-message').innerText = "Congrats! You won. Impossible!"
@@ -195,7 +50,7 @@ function drawBoard() {
 }
 
 document.getElementById('popup-button-x').onclick = (element) => {
-    won == player? start = 'x': start = 'o'
+    won == player ? start = 'x' : start = 'o'
     player = 'x'
     computer = 'o'
     initGame()
@@ -203,15 +58,20 @@ document.getElementById('popup-button-x').onclick = (element) => {
 
 
 document.getElementById('popup-button-o').onclick = (element) => {
-    won == player? start = 'o': start = 'x'
+    won == player ? start = 'o' : start = 'x'
     player = 'o'
     computer = 'x'
     initGame()
 }
 
 function initGame() {
+    let depthLevel = document.getElementById('depth-level').value
+    console.log(depthLevel)
     game = new GameState()
-    ai = new AIPlayer(computer, player)
+    if (depthLevel < 0) {
+        depthLevel = 3
+    }
+    ai = new AIPlayer(computer, player, depthLevel)
     document.getElementById('popup').classList.add("invisible")
     Array.from(document.getElementsByClassName('field')).forEach(element => {
         element.classList.remove('mark')
@@ -222,6 +82,9 @@ function initGame() {
         drawBoard()
     }
     document.getElementById('hint').classList.remove('invisible')
+    document.getElementById('user-sign').innerHTML = ''
+    document.getElementById('user-sign').appendChild(getSign(player))
+    document.getElementById('depth-leve-info').innerText = depthLevel
 }
 
 function getSign(sign) {
