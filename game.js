@@ -69,7 +69,7 @@ function initGame() {
     console.log(depthLevel)
     game = new GameState()
     if (depthLevel < 0) {
-        depthLevel = 3
+        depthLevel = 5
     }
     ai = new AIPlayer(computer, player, depthLevel)
     document.getElementById('popup').classList.add("invisible")
