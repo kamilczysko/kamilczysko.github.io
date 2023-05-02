@@ -84,7 +84,7 @@ function initGame() {
     document.getElementById('hint').classList.remove('invisible')
     document.getElementById('user-sign').innerHTML = ''
     document.getElementById('user-sign').appendChild(getSign(player))
-    document.getElementById('depth-leve-info').innerText = depthLevel
+    document.getElementById('depth-level-info').innerText = depthLevel
 }
 
 function getSign(sign) {
