@@ -1,14 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="game.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     <title>Document</title>
 </head>
+
 <body>
+    <p id="hint" class="hint">Your turn</p>
+    <h1>Thic-tac toe</h1>
+    <div class="board">
+        <div class="row">
+            <div class="cell">
+                <div id="0" class="field"></div>
+            </div>
+            <div class="cell">
+                <div id="1" class="field"></div>
+            </div>
+            <div class="cell">
+                <div id="2" class="field"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell">
+                <div id="3" class="field"></div>
+            </div>
+            <div class="cell">
+                <div id="4" class="field"></div>
+            </div>
+            <div class="cell">
+                <div id="5" class="field"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell">
+                <div id="6" class="field"></div>
+            </div>
+            <div class="cell">
+                <div id="7" class="field"></div>
+            </div>
+            <div class="cell">
+                <div id="8" class="field"></div>
+            </div>
+        </div>
+
+    </div>
+    <div id="popup" class="popup">
+        <h1 id="popup-header">Thic-tac toe</h1>
+        <div>
+            <p id="popup-message"></p>
+            
+        </div>
+        <div class="popup-info">
+            <p>Click to start new game</p>
+            <span>Choose :</span>
+            <div class="button-group">
+                <button id="popup-button-x">X</button>    
+                <span>or</span>
+                <button id="popup-button-o">O</button>    
+            </div>
+
+        </div>
+        
+    </div>
+    <script src="game.js"></script>
+
     
 </body>
+
 </html>

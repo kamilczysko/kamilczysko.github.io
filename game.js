@@ -87,8 +87,8 @@ class GameState {
 
 class AIPlayer {
 
-    constructor(sign, opponent) {
-        this.player = sign
+    constructor(player, opponent) {
+        this.player = player
         this.opponent = opponent
     }
 
@@ -98,16 +98,15 @@ class AIPlayer {
         Array.from(board.getFreeMoves()).forEach(move => {
             let newBoard = new GameState(board.getBoard())
             newBoard.select(move, this.player)
-            if (newBoard.isWinner()) {
+            if (newBoard.isWinner() && newBoard.getWinner == this.player) {
                 return move
             }
-            const score = this.minimax(newBoard, 1000, false)
+            const score = this.minimax(newBoard, 3, false)
             if (bestScore < score) {
                 perfectMove = move
                 bestScore = score
             }
         })
-        console.log("prefect move: " + perfectMove)
         return perfectMove
     }
 
@@ -144,19 +143,86 @@ class AIPlayer {
 
 }
 
-const player = "X"
-const comuputer = "O"
+let player = "x"
+let computer = "o"
+let start = player
 
-let game = new GameState()
-let ai = new AIPlayer(comuputer, player)
+let game = null
+let ai = null
 
-function set(i) {
-    if (!game.select(i, player)) { return }
-    game.printBoard()
-    game.select(ai.move(game), comuputer)
-    game.printBoard()
-    if (game.isWinner()) {
-        console.log("Winner " + game.getWinner())
-        game = new GameState()
+Array.from(document.getElementsByClassName('field')).forEach((element, idx) => {
+    element.onclick = () => {
+        if (!game.select(idx, player)) { return }
+        game.select(ai.move(game), computer)
+        drawBoard()
+        if (game.isWinner()) {
+            const winner = game.getWinner();
+            if (winner == 'n') {
+                document.getElementById('popup').classList.remove('invisible')
+                document.getElementById('popup-message').innerText = "Nobody won! Both losers!"
+                start = player
+            } else {
+                if (winner == player) {
+                    document.getElementById('popup-message').innerText = "Congrats! You won. Impossible!"
+                    start = player
+                }
+                else {
+                    document.getElementById('popup-message').innerText = "Sadly, you are a loser!"
+                    start = computer
+                }
+                document.getElementById('popup').classList.remove('invisible')
+                document.getElementById('hint').classList.add('invisible')
+            }
+
+        }
     }
+})
+
+function drawBoard() {
+    Array.from(game.getBoard()).forEach((cell, idx) => {
+        if (cell != null) {
+            const element = document.getElementById(idx)
+            element.innerHTML = ''
+            element.appendChild(getSign(cell))
+        }
+    })
+}
+
+document.getElementById('popup-button-x').onclick = (element) => {
+    player = 'x'
+    computer = 'o'
+    initGame()
+}
+
+
+document.getElementById('popup-button-o').onclick = (element) => {
+    player = 'o'
+    computer = 'x'
+    initGame()
+}
+
+function initGame() {
+    game = new GameState()
+    ai = new AIPlayer(computer, player)
+    document.getElementById('popup').classList.add("invisible")
+    Array.from(document.getElementsByClassName('field')).forEach(element =>
+        element.innerHTML = ''
+    )
+    if (start == computer) {
+        game.select(ai.move(game), computer)
+        drawBoard()
+    }
+    document.getElementById('hint').classList.remove('invisible')
+}
+
+function getSign(sign) {
+    const element = document.createElement("img")
+    element.classList.add("sign")
+    if (sign == "x") {
+        element.src = 'cross.svg'
+    } else {
+        element.src = 'circle.svg'
+    }
+
+    return element
 }
