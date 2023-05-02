@@ -2,7 +2,7 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-h1{
+h1 {
     text-align: center;
     font-size: 2vw;
 }
@@ -13,7 +13,7 @@ h1{
     margin: auto;
 }
 
-.row{
+.row {
     display: flex;
 }
 
@@ -25,6 +25,7 @@ h1{
     align-items: center;
     justify-content: center;
 }
+
 .field {
     width: 90%;
     height: 90%;
@@ -47,6 +48,10 @@ h1{
 
 .field:active {
     background-color: rgb(239, 239, 239);
+}
+
+.mark {
+    filter: invert(22%) sepia(90%) saturate(7490%) hue-rotate(359deg) brightness(113%) contrast(116%);
 }
 
 .row .cell:nth-child(2) {
@@ -98,12 +103,12 @@ h1{
 }
 
 .popup button:hover {
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .popup button:active {
     font-weight: 900;
-    position:relative;
+    position: relative;
     bottom: 2px;
 }
 

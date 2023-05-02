@@ -146,6 +146,7 @@ class AIPlayer {
 let player = "x"
 let computer = "o"
 let start = player
+let won = null
 
 let game = null
 let ai = null
@@ -160,16 +161,21 @@ Array.from(document.getElementsByClassName('field')).forEach((element, idx) => {
             if (winner == 'n') {
                 document.getElementById('popup').classList.remove('invisible')
                 document.getElementById('popup-message').innerText = "Nobody won! Both losers!"
-                start = player
+                won = 'n'
             } else {
                 if (winner == player) {
                     document.getElementById('popup-message').innerText = "Congrats! You won. Impossible!"
-                    start = player
+                    won = player
                 }
                 else {
                     document.getElementById('popup-message').innerText = "Sadly, you are a loser!"
-                    start = computer
+                    won = computer
                 }
+                let results = game.getResult()
+                document.getElementById(results[0]).childNodes[0].classList.add('mark')
+                document.getElementById(results[1]).childNodes[0].classList.add('mark')
+                document.getElementById(results[2]).childNodes[0].classList.add('mark')
+
                 document.getElementById('popup').classList.remove('invisible')
                 document.getElementById('hint').classList.add('invisible')
             }
@@ -189,6 +195,7 @@ function drawBoard() {
 }
 
 document.getElementById('popup-button-x').onclick = (element) => {
+    won == player? start = 'x': start = 'o'
     player = 'x'
     computer = 'o'
     initGame()
@@ -196,6 +203,7 @@ document.getElementById('popup-button-x').onclick = (element) => {
 
 
 document.getElementById('popup-button-o').onclick = (element) => {
+    won == player? start = 'o': start = 'x'
     player = 'o'
     computer = 'x'
     initGame()
@@ -205,9 +213,10 @@ function initGame() {
     game = new GameState()
     ai = new AIPlayer(computer, player)
     document.getElementById('popup').classList.add("invisible")
-    Array.from(document.getElementsByClassName('field')).forEach(element =>
+    Array.from(document.getElementsByClassName('field')).forEach(element => {
+        element.classList.remove('mark')
         element.innerHTML = ''
-    )
+    })
     if (start == computer) {
         game.select(ai.move(game), computer)
         drawBoard()
